@@ -53,9 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Image.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="MyImage.cs" />
-    <Compile Include="MyImageFolder.cs" />
     <Compile Include="testConverter.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">

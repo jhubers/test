@@ -26,42 +26,34 @@ namespace WpfApplication3
                 NotifyPropertyChanged("PropDataTable");
             }
         }
-        private List<MyImageFolder> myImageFolderList;
-        public List<MyImageFolder> MyImageFolderList
-        {
-            get { return myImageFolderList; }
-            set
-            {
-                myImageFolderList = value;
-                NotifyPropertyChanged("MyImageFolderList");
-            }
-        }
+        //constructor
         public ViewModel()
         {
-            DataTable tempPropDataTable = new DataTable();
-            tempPropDataTable.Columns.Add("A", typeof(string));
-            tempPropDataTable.Columns.Add("B", typeof(string));
-            DataRow row0 = tempPropDataTable.NewRow();
-            DataRow row1 = tempPropDataTable.NewRow();
-            row0[0] = "A0";
-            row0[1] = "B0";
-            row1[0] = "A1";
-            row1[1] = "B1";
-            tempPropDataTable.Rows.Add(row0);
-            tempPropDataTable.Rows.Add(row1);
-            PropDataTable = tempPropDataTable;
-
-            MyImageFolderList = new List<MyImageFolder>();
-            //in D:\Temp\B1 there are two filesP test0.jpg and test1.jpg
-            string B0 = "D:\\Temp\\B1\\test0.jpg";
-            string B1 = "D:\\Temp\\B1\\test1.jpg";
-            MyImageFolder mif = new MyImageFolder("B1");
-            MyImage mi0 = new MyImage(B0);
-            MyImage mi1 = new MyImage(B1);
-            mif.MyImageList = new List<MyImage>();//did you forget this???
-            mif.MyImageList.Add(mi0);
-            mif.MyImageList.Add(mi1);
-            MyImageFolderList.Add(mif);
+            PropDataTable = new DataTable();
+            Image dum = new Image("test");
+            List<Image> dumList = new List<Image>();
+            dumList.Add(dum);
+            Image B1I0 = new Image("D:\\Temp\\B1\\test0.jpg");
+            Image B1I1 = new Image("D:\\Temp\\B1\\test1.jpg");
+            List<Image> B1L = new List<Image>();
+            B1L.Add(B1I0);
+            B1L.Add(B1I1);
+            Item A0 = new Item("A0", dumList);
+            Item B0 = new Item("B0", dumList);
+            Item A1 = new Item("A1", dumList);
+            Item B1 = new Item("B1", B1L);
+            //DataTable tempPropDataTable = new DataTable();
+            PropDataTable.Columns.Add("A", typeof(Item));
+            PropDataTable.Columns.Add("B", typeof(Item));
+            DataRow row0 = PropDataTable.NewRow();
+            DataRow row1 = PropDataTable.NewRow();
+            row0[0] = A0;
+            row0[1] = B0;
+            row1[0] = A1;
+            row1[1] = B1;
+            PropDataTable.Rows.Add(row0);
+            PropDataTable.Rows.Add(row1);
+            //PropDataTable = tempPropDataTable;
         }
     }
 }

@@ -2,31 +2,24 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:myViewModel="clr-namespace:WpfApplication3" 
-        Title="MainWindow" Height="120" Width="200">
-    <Window.Resources>
-        <myViewModel:testConverter x:Key="myTestConverter"/>
-    </Window.Resources>
+        Title="MyWindow" Height="120" Width="353">
     <Window.DataContext>
         <myViewModel:ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <DataGrid x:Name="myXAMLtable" AutoGenerateColumns="True" CanUserAddRows="False"
-                  ItemsSource="{Binding PropDataTable}">
+    <Window.Resources>
+        <myViewModel:testConverter x:Key="myTestConverter"/>
+    </Window.Resources>
+    <Grid >
+        <DataGrid x:Name="myXAMLtable" AutoGenerateColumns="True" CanUserAddRows="False" 
+                 ItemsSource="{Binding PropDataTable}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ListBox x:Name="folder" ItemsSource="{Binding MyImageFolderList}">
-                                <ListBox.DataContext>
-                                    <myViewModel:ViewModel/>
-                                </ListBox.DataContext>
+                            <ListBox ItemsSource="{Binding ImageList}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding MyImageFolderList/MyImageList/MyImagePath, Converter={StaticResource myTestConverter}}">
-                                            <TextBlock.DataContext>
-                                                <myViewModel:ViewModel/>
-                                            </TextBlock.DataContext>
-                                        </TextBlock>
+                                        <TextBlock Text="{Binding ImagePath}"/>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
