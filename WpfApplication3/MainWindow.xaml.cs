@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApplication3
 {
@@ -23,6 +12,32 @@ namespace WpfApplication3
         public MainWindow()
         {
             InitializeComponent();
+        }
+        private void myXAMLtable_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            switch (e.Column.Header.ToString())
+            {
+                case "Images":
+                    // Create a new template column.
+                    DataGridTemplateColumn imageTemplateColumn = new DataGridTemplateColumn();
+                    imageTemplateColumn.Header = "Images";
+                    imageTemplateColumn.CellTemplate = (DataTemplate)Resources["convertedImage"];
+                    // Replace the auto-generated column with the templateColumn.
+                    e.Column = imageTemplateColumn;
+                    e.Column.Width = 200;
+                    break;
+                default:
+                    e.Column.Width = 100;
+                    break;
+            }
+        }
+
+        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var im = (System.Windows.Controls.Image)sender;
+            FullScreenImage myFullScreenImage = new FullScreenImage();
+            myFullScreenImage.fullImage.Source = im.Source;
+            myFullScreenImage.Show();
         }
     }
 }
