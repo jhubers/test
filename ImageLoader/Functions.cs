@@ -21,6 +21,10 @@ namespace MyImageLoader
                 }
                 else
                 {
+                    if (!Directory.Exists("C:\\Temp"))
+                    {
+                        Directory.CreateDirectory("C:\\Temp");
+                    }
                     searchFolder = "C:\\Temp";
                 }
             }
