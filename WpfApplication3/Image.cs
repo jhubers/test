@@ -1,6 +1,6 @@
 ﻿
 
-namespace WpfApplication3
+namespace MyImageLoader
 {
     public class Image 
     {

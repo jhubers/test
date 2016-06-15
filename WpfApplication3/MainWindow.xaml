@@ -1,7 +1,7 @@
-﻿<Window x:Class="WpfApplication3.MainWindow"
+﻿<Window x:Class="MyImageLoader.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:myViewModel="clr-namespace:WpfApplication3" 
+        xmlns:myViewModel="clr-namespace:MyImageLoader"
         SizeToContent="WidthAndHeight"
         Title="MyWindow">
     <Window.DataContext>
@@ -10,32 +10,51 @@
     <Window.Resources>
         <myViewModel:testConverter x:Key="myTestConverter"/>
         <myViewModel:DataRowToListConverter x:Key="myDataRowToListConverter"/>
-        <DataTemplate x:Key="convertedImage">
-            <ListBox ItemsSource="{Binding  Converter={StaticResource myDataRowToListConverter}}">
-                <ListBox.ItemTemplate>
+        <DataTemplate x:Key="convertedImagePath">
+            <ItemsControl ItemsSource="{Binding  Converter={StaticResource myDataRowToListConverter}}">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding ImagePath}"/>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </DataTemplate>
+        <!--this sets all datagridcells to not selectable, well it should-->
+        <!--<Style x:Key="AvoidCellSelection" TargetType="{x:Type DataGridCell}">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>-->
+        <Style TargetType="{x:Type DataGridCell}">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid >
         <DataGrid x:Name="myXAMLtable" AutoGenerateColumns="True" CanUserAddRows="False" 
-                 ItemsSource="{Binding PropDataTable}" AutoGeneratingColumn="myXAMLtable_AutoGeneratingColumn">            
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                 ItemsSource="{Binding PropDataTable}" AutoGeneratingColumn="myXAMLtable_AutoGeneratingColumn" 
+                 Focusable="False" >
+            <DataGrid.Columns >
+                <DataGridTemplateColumn x:Name="dgtc">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ListBox ItemsSource="{Binding  Converter={StaticResource myDataRowToListConverter}}">
-                                <ListBox.ItemTemplate>
+                            <ItemsControl ItemsSource="{Binding  
+                                Converter={StaticResource myDataRowToListConverter}}">
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding ImagePath}" Width="60" 
-                                               HorizontalAlignment="Left" MouseUp="Image_MouseUp">
-                                        </Image>                                 
+                                        <Border x:Name="imageBorder" BorderThickness="1" BorderBrush="Black"                                                
+                                                MouseLeave="imageBorder_MouseLeave"
+                                                MouseEnter="imageBorder_MouseEnter" Height="16">
+                                            <Image x:Name="myImage" Source="{Binding ImagePath}"
+                                               MouseUp="Image_MouseUp"  HorizontalAlignment="Center">
+                                            </Image>
+                                        </Border>
                                     </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

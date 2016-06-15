@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace WpfApplication3
+namespace MyImageLoader
 {
     public class testConverter : IValueConverter
     {
