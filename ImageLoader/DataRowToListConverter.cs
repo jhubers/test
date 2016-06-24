@@ -6,12 +6,12 @@ using System.Windows.Data;
 
 namespace MyImageLoader
 {
-    [ValueConversion(typeof(DataRowView), typeof(List<Image>))]
+    [ValueConversion(typeof(DataRowView), typeof(List<pImage>))]
     class DataRowToListConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            List<Image> li = new List<Image>();
+            List<pImage> li = new List<pImage>();
             if (value==null)
             {
                 return li;
@@ -19,12 +19,12 @@ namespace MyImageLoader
             else
             {
                 var item = (DataRowView)value;
-                //now the row consists only of items, but in the firs row we want the list of images
+                //now the row consists only of items, but in the first row we want the list of images
                 //which is now a property of Item, so in that case replace the row item by this property
                 if (item[0].GetType() == typeof(Item))
                 {
                     Item thisItem = (Item)item[0];
-                    return thisItem.Im;
+                    return thisItem.Iml;
                 }
                 else
                 {

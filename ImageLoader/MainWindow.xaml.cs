@@ -34,8 +34,7 @@ namespace MyImageLoader
                     break;
             }
         }
-
-        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Image_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             var im = (System.Windows.Controls.Image)sender;
             //if (e.ClickCount == 2)
@@ -44,53 +43,6 @@ namespace MyImageLoader
             myFullScreenImage.Show();
         }
 
-        #region myImage_MouseEnter
-        //private void myImage_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    //we have the next tree
-        //    //Grid
-        //    //DataGrid
-        //    //DataGrid.Columns
-        //    //DataGridTemplateColumn
-        //    //DataGridTemplateColumn.CellTemplate
-        //    //DataTemplate
-        //    //ItemsControl
-        //    //ItemsControl.ItemTemplate
-        //    //DataTemplate
-        //    //Border
-        //    //Image
-
-        //    var im = (System.Windows.Controls.Image)sender;
-        //    double w = im.ActualWidth;
-        //    double h = im.ActualHeight;
-        //    double W = im.Source.Width;
-        //    double H = im.Source.Height;
-        //    double ratio = W / H;
-        //    Border b = (Border)im.Parent;
-        //    im.Height = 50;
-        //    b.Height = 52;
-        //    //var dgtc = (DataGridTemplateColumn)this.FindName("dgtc");
-        //    //dgtc.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
-        //    //ContentPresenter cP = (ContentPresenter)VisualTreeHelper.GetParent(b);
-        //    //StackPanel sP = (StackPanel)VisualTreeHelper.GetParent(cP);
-        //    //BringToFront(sP, cP);
-        //    //foreach (ContentPresenter item in sP.Children)
-        //    //{
-        //    //    if (item == cP)
-        //    //    {
-        //    //        item.Height = 50;
-        //    //        b.Height = 50;
-        //    //        im.Height = 48;
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        item.Width = 22;
-        //    //        item.Height = 16;
-        //    //    }
-        //    //}
-
-        //} 
-        #endregion
         private void imageBorder_MouseEnter(object sender, MouseEventArgs e)
         {
             var b = (Border)sender;
@@ -98,54 +50,6 @@ namespace MyImageLoader
             im.Height = 50;
             b.Height = 52;
         }
-
-        #region myImage_MouseLeave
-        //private void myImage_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    var im = (System.Windows.Controls.Image)sender;
-        //    Border b = (Border)im.Parent;
-        //    im.Height = 14;
-        //    b.Height = 16;
-        //    //ItemsControl ic = FindVisualParent<ItemsControl>(b);
-        //    //ic.Height = 16;
-        //    ////DataGridTemplateColumn dgtc = FindVisualParent<DataGridTemplateColumn>(im);
-        //    var dgtc = (DataGridTemplateColumn)this.FindName("dgtc");
-        //    var md = (Border)Mouse.DirectlyOver;
-        //    if (md == null)
-        //    {
-        //        dgtc.Width = new DataGridLength(1, DataGridLengthUnitType.SizeToCells);
-        //    }
-        //    else
-        //    {
-        //        string mdn = md.Name;
-        //        if (mdn != "imageBorder")
-        //        {
-        //            dgtc.Width = new DataGridLength(1, DataGridLengthUnitType.SizeToCells);
-        //        }
-        //    }
-        //    #region MyRegion
-        //    //dgtc.Width = 22;
-        //    ////DataGridTemplateColumn dgtc = im
-        //    ////Border b = (Border)im.Parent;
-        //    ////b.Width = 22;
-        //    ////ContentPresenter cP = (ContentPresenter)VisualTreeHelper.GetParent(b);
-        //    ////StackPanel sP = (StackPanel)VisualTreeHelper.GetParent(cP);
-        //    ////sP.Height = 16;
-        //    ////sP.Width = 22;
-        //    ////ItemsPresenter t = (ItemsPresenter)VisualTreeHelper.GetParent(sP);
-        //    ////t.Width = 22;
-        //    ////Border tt = (Border)VisualTreeHelper.GetParent(t);
-        //    ////tt.Width = 22;
-        //    ////ItemsControl ttt = (ItemsControl)VisualTreeHelper.GetParent(tt);
-        //    ////ttt.Width = 22;
-        //    ////ContentPresenter tttt = (ContentPresenter)VisualTreeHelper.GetParent(ttt);
-        //    ////tttt.Width = 22;
-        //    ////var ttttt = VisualTreeHelper.GetParent(tttt);
-        //    ////var tttttt = VisualTreeHelper.GetParent(ttttt); 
-        //    #endregion
-
-        //} 
-        #endregion
 
         private void imageBorder_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -225,6 +129,6 @@ namespace MyImageLoader
                 // use recursion to proceed with next level
                 return FindVisualParent<T>(parentObject);
             }
-        }        
+        }
     }
 }
