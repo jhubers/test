@@ -47,7 +47,7 @@
                                           Tag="{Binding ElementName=myWindow, Path=DataContext}">
                                 <ItemsControl.ContextMenu>
                                     <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                                        <MenuItem Header="Add..." Command="{Binding menuAction}" CommandParameter="Add..."/>
+                                        <MenuItem Header="Copy..." Command="{Binding menuAction}" CommandParameter="Copy..."/>
                                         <MenuItem Header="Add from clipboard..." Command="{Binding menuAction}" CommandParameter="Add from clipboard..."/>
                                         <MenuItem Header="Delete..." Command="{Binding menuAction}" CommandParameter="Delete..."/>
                                     </ContextMenu>

@@ -55,7 +55,6 @@ namespace MyImageLoader
             //String searchFolder = "D:\\Temp\\Images\\P1"; 
             //this is when you use this application as plug-in for one row. It is a property you can set to avoid next dialog
             String searchFolder = MainWindow.imagesPath;
-            //
             if (searchFolder == null)
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -71,11 +70,10 @@ namespace MyImageLoader
                 }
             }
             List<pImage> ImageList = new List<pImage>();
+            var filters = new String[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp" };
             if (!searchFolder.Equals("empty"))
             {
-                var filters = new String[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp" };
-                //next function returns a list of strings with only the path names of files
-                //with extension in filters
+                //next function returns a list of strings with only the path names of files, with extension in filters
                 files = Functions.GetFilesFrom(searchFolder, filters, false);
                 foreach (var imagePath in files)
                 {
@@ -97,14 +95,14 @@ namespace MyImageLoader
             i0.Iml = ImageList;
             row0[0] = i0;
             PropDataTable.Rows.Add(row0);
-
+            //this runs only when rightclick on an image during execution of the application
             _menuAction = new DelegateCommand<string>(
             (s) =>
             { /* perform some action*/
                 switch (s)
                 {
-                    case "Add...":
-                        System.Windows.MessageBox.Show("You choose Add...");
+                    case "Copy...":
+                        System.Windows.MessageBox.Show("You choose Copy...");
                         break;
                     case "Add from clipboard...":
                         //System.Windows.MessageBox.Show("Add from clipboard...");
@@ -119,11 +117,20 @@ namespace MyImageLoader
                             }
                             else
                             {
-                                searchFolder = "empty";
+                                break;
                             }
-                            break;
+                            //since searchFolder equals "empty" files is also empty
+                            //next function returns a list of strings with only the path names of files, with extension in filters
+                            files = Functions.GetFilesFrom(searchFolder, filters, false);
+                            //remove the button like image
+                            ImageList.Clear();
+                            foreach (var imagePath in files)
+                            {
+                                pImage im = new pImage(imagePath);
+                                ImageList.Add(im);
+                            }
                         }
-                            if (System.Windows.Clipboard.GetDataObject() != null)
+                        if (System.Windows.Clipboard.GetDataObject() != null)
                         {
                             System.Windows.IDataObject data = System.Windows.Clipboard.GetDataObject();
                             if (data.GetDataPresent(System.Windows.DataFormats.Bitmap))
@@ -131,8 +138,8 @@ namespace MyImageLoader
                                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                                 if (!searchFolder.Equals("empty"))
                                 {
-                                saveFileDialog1.CustomPlaces.Add(searchFolder);
-                                saveFileDialog1.InitialDirectory = searchFolder;
+                                    saveFileDialog1.CustomPlaces.Add(searchFolder);
+                                    saveFileDialog1.InitialDirectory = searchFolder;
                                 }
                                 saveFileDialog1.AddExtension = true;
                                 saveFileDialog1.DefaultExt = "Png";
@@ -149,6 +156,8 @@ namespace MyImageLoader
                                 //because the cells are bound to that and through a converter to the imageList
                                 //so first find the right row in PropDataTable, then the Item, and then the image in the Item.Iml (imageList)
                                 //hmm, the other way around
+                                //but if from the start theres is no searchfolder, then files is empty
+
                                 if (files.Contains(fp))
                                 {
                                     for (int p = ImageList.Count - 1; p >= 0; p--)
@@ -156,10 +165,10 @@ namespace MyImageLoader
                                         if (ImageList[p].ImagePath.Equals(fp))
                                         {
                                             //find this Item in PropDataTable
-                                            int ri = 0;                                            
+                                            int ri = 0;
                                             for (int i = 0; i < propDataTable.Rows.Count; i++)
                                             {
-                                                if (propDataTable.Rows[i][0]==i0)
+                                                if (propDataTable.Rows[i][0] == i0)
                                                 {
                                                     ri = i;
                                                     continue;
