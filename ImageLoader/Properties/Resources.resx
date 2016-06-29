@@ -117,25 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pCOLADdummy" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk2uAwAAAAAAAG4BAAAoAAAAGAAAABgAAAABAAgAAAAAAAAAAADEDgAAxA4AAE4AAABOAAAAk5OT/6io
-        qP+IiIv/goKG/4KChf+EhIj/jIyM/5eXl/+AgIX/gYGF/4ODh/+Kioz/jo6O/5KSlP+YmJj/hISH/4mJ
-        jP+Pj5L/goKH/5WVlv+goKD/lpaX/6Ghof+enp7/mpqe/5ubnv+UlJb/ra2t/729vf/Nzc3/g4OI/4WF
-        iP+kpKT/rKys/6+vr//W1tb/jIyO/4uLjv+FhYr/kZGU/7Kysv/b29v/k5OY/4qKjv+fn5//rq6u/76+
-        vv/m5ub/6Ojo/6qqqv/l5eX/8vLy//Hx8f+Xl5j/l5eb/7e3t//n5+f/m5uk/6Skr/+np6r/tLS0/87O
-        zv+np6//p6eu/9fX1//t7e3/sLCw/8vLy//i4uL/8PDw/8XFxf/S0tL/xMTE/8/Pz//q6ur/6enp/+/v
-        7//u7u7/DgIAAg4AAAIAMSAxMSAxAgAAAAAAAAAAAA4ADgACICAgTU1NMzNNMTExAAAAAAAODgIOKw4x
-        MU0wME1NTTMzM00xMQIAAAACAA4CMTExMUZARkYdTTNNMzMzTTEAAAAODgIOMTExMSAxMTw8PB0wTU0z
-        M00xAAAADgIxPjkxIDEgMTExMTExHClNMzNNMQIODjExOTExMTExIDEgMSAxMRwdTTMzMTECAjEODjEx
-        IDEgMSAxIDExMTExME1NTTEODjEODjExMSAxMSAxMSAxIDExHE1NTTEAMQ4OKzExIDEgMSAxIDEgMTEx
-        MRxNM00xMQ4OAg4xMSAxMSAxMSAxMTExMTwcTSkxMQICAgIxMSAxIDEgMSAxIDExMTExQCkxMQgCCAIg
-        MSAxIDExIDEgMTEgMTExHSkxMQgICAgCMTExIDEgMTEgMSAxIDExHB0xMQgICAgIDjExIDExIDEgMTEg
-        MSAxMSAxAiAICAgICA4xIDEgMTEgMSAxMSAxIDEODjEICAgICAgOMTExMSAxIDEgMSAxIDECAjExCAgI
-        CAgICA4OIDExMSAxMTExMTEODgAxCAgICAgICAgIAgIODg4ADg4xMQAAAg4CMQgICAgICAgCAgICDg4O
-        Dg4xDgIODgAAMTEICAgICAgIAgIODg4ODjECAAAAAg4AAAAxMQgICAgCAgICDg4xMQAOAAAODgIOAAIO
-        MTExAggIAgIOMTExAg4CDgACDg4CDgAODgIOMTExMTExDgIOAA4OAg4O
-</value>
-  </data>
 </root>

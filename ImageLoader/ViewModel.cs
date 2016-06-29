@@ -58,7 +58,7 @@ namespace MyImageLoader
             if (searchFolder == null)
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
-                fbd.Description = "Please choose a folder with images, or right click in Images column...";
+                fbd.Description = "Please choose a folder to add or delete images, and/or right click in Images column...";
                 DialogResult result = fbd.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -88,6 +88,7 @@ namespace MyImageLoader
                 //However some computers might not like that... Try to use the Resource
                 string appFolderPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 string path = Path.Combine(Directory.GetParent(appFolderPath).Parent.FullName, "pCOLADdummy.bmp");
+                //string path = "";
                 pImage dummy = new pImage(path);
                 ImageList.Add(dummy);
             }
@@ -96,11 +97,17 @@ namespace MyImageLoader
             row0[0] = i0;
             PropDataTable.Rows.Add(row0);
             //this runs only when rightclick on an image during execution of the application
+            //s is the commandparameter
             _menuAction = new DelegateCommand<string>(
             (s) =>
             { /* perform some action*/
                 switch (s)
                 {
+                    case "Full screen...":
+                        System.Windows.MessageBox.Show("You choose Full screen...");
+                        //if there are no images in the selected folder or no selected folder
+                        //warn: Please select a folder with images first…
+                        break;
                     case "Copy...":
                         System.Windows.MessageBox.Show("You choose Copy...");
                         break;
@@ -151,12 +158,12 @@ namespace MyImageLoader
                                 //string toBeDeleted = "";
                                 string fp = saveFileDialog1.FileName;
                                 //if the overwriting a file is chosen, you get an IO error because the file is in use in the display
-                                //so you first have to remove it from there (through converter put in memory). 
+                                //so you first have to put the image in memory (through converter). 
                                 //You also have to update the PropDataTable
                                 //because the cells are bound to that and through a converter to the imageList
                                 //so first find the right row in PropDataTable, then the Item, and then the image in the Item.Iml (imageList)
                                 //hmm, the other way around
-                                //but if from the start theres is no searchfolder, then files is empty
+                                //but if from the start there is no searchfolder, then files is empty
 
                                 if (files.Contains(fp))
                                 {
@@ -189,6 +196,15 @@ namespace MyImageLoader
                                         BitmapEncoder encoder = new PngBitmapEncoder();
                                         encoder.Frames.Add(BitmapFrame.Create(image));
                                         encoder.Save(fileStream);
+                                    }
+                                    //add the image to the display if it was not a replacement
+                                    if (!files.Contains(fp))
+                                    {
+                                        i0.Iml.Add(new pImage(fp));
+                                        //i0.Iml[0] = new pImage(fp);
+                                        //change the PropDataTable so it updates in the xaml control
+                                        PropDataTable.AcceptChanges();//this sets the PropDataTable and runs the propertyChanged notifier
+
                                     }
                                 }
                             }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MyImageLoader
 {
@@ -38,9 +41,33 @@ namespace MyImageLoader
         {
             var im = (System.Windows.Controls.Image)sender;
             //if (e.ClickCount == 2)
-            FullScreenImage myFullScreenImage = new FullScreenImage();
-            myFullScreenImage.fullImage.Source = im.Source;
-            myFullScreenImage.Show();
+            string appFolderPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            BitmapImage bi = new BitmapImage();
+            bi = (BitmapImage)im.Source;
+            string imagePath = ((System.IO.FileStream)bi.StreamSource).Name;
+            if (imagePath == System.IO.Path.Combine(Directory.GetParent(appFolderPath).Parent.FullName, "pCOLADdummy.bmp"))
+            {
+                //MessageBox.Show("Please first select a folder with images…");
+                //show the context menu
+                var test = FindVisualParent<ItemsControl>(im);
+                //ContentPresenter test =(ContentPresenter)im.TemplatedParent;//
+                OpenContextMenu(test);
+                //test.myContextMenu.IsOpen = true;
+            }
+            else
+            {
+                FullScreenImage myFullScreenImage = new FullScreenImage();
+                myFullScreenImage.fullImage.Source = im.Source;
+                myFullScreenImage.Show();
+            }
+        }
+        private void OpenContextMenu(FrameworkElement element)
+        {
+            if (element.ContextMenu != null)
+            {
+                element.ContextMenu.PlacementTarget = element;
+                element.ContextMenu.IsOpen = true;
+            }
         }
 
         private void imageBorder_MouseEnter(object sender, MouseEventArgs e)
