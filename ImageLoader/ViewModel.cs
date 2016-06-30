@@ -52,9 +52,9 @@ namespace MyImageLoader
             //For now the application is used as plug-in for just one row.
             DataRow row0 = PropDataTable.NewRow();
             List<string> files = new List<string>();
-            //String searchFolder = "D:\\Temp\\Images\\P1"; 
+            String searchFolder = "D:\\Temp\\Images\\P1"; 
             //this is when you use this application as plug-in for one row. It is a property you can set to avoid next dialog
-            String searchFolder = MainWindow.imagesPath;
+            //String searchFolder = MainWindow.imagesPath;
             if (searchFolder == null)
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -204,7 +204,6 @@ namespace MyImageLoader
                                         //i0.Iml[0] = new pImage(fp);
                                         //change the PropDataTable so it updates in the xaml control
                                         PropDataTable.AcceptChanges();//this sets the PropDataTable and runs the propertyChanged notifier
-
                                     }
                                 }
                             }
@@ -219,7 +218,97 @@ namespace MyImageLoader
                         }
                         break;
                     case "Delete...":
-                        System.Windows.MessageBox.Show("You choose Delete...");
+                        //System.Windows.MessageBox.Show("You choose Delete...");
+                        //how do I know which image was the right click on?
+                        if (searchFolder.Equals("empty"))
+                        {
+                            FolderBrowserDialog fbd = new FolderBrowserDialog();
+                            fbd.Description = "Please choose a folder where you want to delete an image...";
+                            DialogResult result = fbd.ShowDialog();
+                            if (result == DialogResult.OK)
+                            {
+                                searchFolder = fbd.SelectedPath;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            //since searchFolder equals "empty" files is also empty
+                            //next function returns a list of strings with only the path names of files, with extension in filters
+                            files = Functions.GetFilesFrom(searchFolder, filters, false);
+                            //remove the button like image
+                            ImageList.Clear();
+                            foreach (var imagePath in files)
+                            {
+                                pImage im = new pImage(imagePath);
+                                ImageList.Add(im);
+                            }
+                        }
+                        if (System.Windows.Clipboard.GetDataObject() != null)
+                        {
+                            System.Windows.IDataObject data = System.Windows.Clipboard.GetDataObject();
+                            if (data.GetDataPresent(System.Windows.DataFormats.Bitmap))
+                            {
+                                //you get an IO error because the file is in use in the display
+                                //so you first have to put the image in memory (through converter). 
+                                //You also have to update the PropDataTable
+                                //because the cells are bound to that and through a converter to the imageList
+                                //so first find the right row in PropDataTable, then the Item, and then the image in the Item.Iml (imageList)
+                                //hmm, the other way around
+                                //but if from the start there is no searchfolder, then files is empty
+
+                                if (files.Contains(fp))
+                                {
+                                    for (int p = ImageList.Count - 1; p >= 0; p--)
+                                    {
+                                        if (ImageList[p].ImagePath.Equals(fp))
+                                        {
+                                            //find this Item in PropDataTable
+                                            int ri = 0;
+                                            for (int i = 0; i < propDataTable.Rows.Count; i++)
+                                            {
+                                                if (propDataTable.Rows[i][0] == i0)
+                                                {
+                                                    ri = i;
+                                                    continue;
+                                                }
+                                            }
+                                            //change the imageList property of this Item
+                                            i0.Iml[p] = new pImage(fp);
+                                            //change the PropDataTable so it updates in the xaml control
+                                            PropDataTable.AcceptChanges();//this sets the PropDataTable and runs the propertyChanged notifier
+                                        }
+                                    }
+                                }
+                                if (!fp.Equals(""))
+                                {
+                                    var image = System.Windows.Clipboard.GetImage();
+                                    using (var fileStream = new FileStream(fp, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+                                    {
+                                        BitmapEncoder encoder = new PngBitmapEncoder();
+                                        encoder.Frames.Add(BitmapFrame.Create(image));
+                                        encoder.Save(fileStream);
+                                    }
+                                    //add the image to the display if it was not a replacement
+                                    if (!files.Contains(fp))
+                                    {
+                                        i0.Iml.Add(new pImage(fp));
+                                        //i0.Iml[0] = new pImage(fp);
+                                        //change the PropDataTable so it updates in the xaml control
+                                        PropDataTable.AcceptChanges();//this sets the PropDataTable and runs the propertyChanged notifier
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                System.Windows.MessageBox.Show("No image in Clipboard !!");
+                            }
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("Clipboard Empty !!");
+                        }
+
                         break;
                     default:
                         break;
