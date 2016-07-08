@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -17,7 +18,16 @@ namespace MyImageLoader
         public static string imagesPath { get; set; }
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+                throw;
+            }
         }
         private void myXAMLtable_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -41,18 +51,19 @@ namespace MyImageLoader
         {
             var im = (System.Windows.Controls.Image)sender;
             //if (e.ClickCount == 2)
-            string appFolderPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string appFolderPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             BitmapImage bi = new BitmapImage();
             bi = (BitmapImage)im.Source;
             string imagePath = ((System.IO.FileStream)bi.StreamSource).Name;
-            if (imagePath == System.IO.Path.Combine(Directory.GetParent(appFolderPath).Parent.FullName, "pCOLADdummy.bmp"))
+            if (imagePath == appFolderPath + "\\pCOLADdummy.bmp")
             {
                 //MessageBox.Show("Please first select a folder with images…");
                 //show the context menu
-                var test = FindVisualParent<ItemsControl>(im);
-                //ContentPresenter test =(ContentPresenter)im.TemplatedParent;//
-                OpenContextMenu(test);
-                //test.myContextMenu.IsOpen = true;
+                //var test = FindVisualParent<ItemsControl>(im);//this was when ContextMenu was on ItemsControl, now it is on Image
+                ContextMenu contextMenu = im.ContextMenu;
+                contextMenu.PlacementTarget = im;
+                contextMenu.IsOpen = true;
+                //OpenContextMenu(test);//this was when ContextMenu was on ItemsControl, now it is on Image
             }
             else
             {
@@ -156,6 +167,17 @@ namespace MyImageLoader
                 // use recursion to proceed with next level
                 return FindVisualParent<T>(parentObject);
             }
+        }
+
+        private void myImage_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var im = (System.Windows.Controls.Image)sender;
+            //if (e.ClickCount == 2)
+            //string appFolderPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().CodeBase);//gave crash in Grasshopper
+            BitmapImage bi = new BitmapImage();
+            bi = (BitmapImage)im.Source;
+            string imagePath = ((System.IO.FileStream)bi.StreamSource).Name;
+            ViewModel.selectedImagePath = imagePath;
         }
     }
 }

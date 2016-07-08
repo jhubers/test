@@ -43,26 +43,26 @@
                 <DataGridTemplateColumn x:Name="dgtc">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate x:Name="dt">
-                            <ItemsControl x:Name="myItemsControl" ItemsSource="{Binding Converter={StaticResource myDataRowToListConverter}}" 
-                                          Tag="{Binding ElementName=myWindow, Path=DataContext}">
-                                <ItemsControl.ContextMenu>
-                                    <ContextMenu x:Name="myContextMenu" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                                        <!--<MenuItem Header="Full screen..." Command="{Binding menuAction}" CommandParameter="Full screen..."/>-->
-                                        <MenuItem Header="Copy..." Command="{Binding menuAction}" CommandParameter="Copy..."/>
-                                        <MenuItem Header="Add from clipboard..." Command="{Binding menuAction}" CommandParameter="Add from clipboard..."/>
-                                        <MenuItem Header="Delete..." Command="{Binding menuAction}" CommandParameter="Delete..."/>
-                                    </ContextMenu>
-                                </ItemsControl.ContextMenu>
+                            <ItemsControl x:Name="myItemsControl" 
+                                        ItemsSource="{Binding Converter={StaticResource myDataRowToListConverter}}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="imageBorder" BorderThickness="1"                                                
                                                 MouseLeave="imageBorder_MouseLeave"
                                                 MouseEnter="imageBorder_MouseEnter"                                                 
-                                                Height="16" BorderBrush="Black"
-                                                >
+                                                Height="16" BorderBrush="Black">
                                             <Image x:Name="myImage" Source="{Binding ImagePath, Converter={StaticResource myPathToCachedImageConverter}}"
-                                               MouseLeftButtonUp="Image_LeftMouseUp"
-                                               HorizontalAlignment="Center" AllowDrop="True" Stretch="Uniform" />
+                                               MouseLeftButtonUp="Image_LeftMouseUp" MouseRightButtonUp="myImage_MouseRightButtonUp"
+                                               HorizontalAlignment="Center" AllowDrop="True" Stretch="Uniform"
+                                                   Tag="{Binding ElementName=myWindow, Path=DataContext}" >
+                                                <Image.ContextMenu>
+                                                    <ContextMenu x:Name="myContextMenu" DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                        <MenuItem Header="Copy..." Command="{Binding menuActionCopy}"/>
+                                                        <MenuItem Header="Add from clipboard..." Command="{Binding menuActionAddFromClipBoard}"/>
+                                                        <MenuItem Header="Delete..." Command="{Binding menuActionDelete}" />
+                                                    </ContextMenu>
+                                                </Image.ContextMenu>
+                                            </Image>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

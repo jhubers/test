@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
 namespace MyImageLoader
@@ -17,16 +18,41 @@ namespace MyImageLoader
 
             if (!string.IsNullOrEmpty(value.ToString()))
             {
-                BitmapImage bi = new BitmapImage();
-                bi.BeginInit();
-                //bi.UriSource = new Uri(value.ToString());
-                bi.StreamSource = new FileStream(value.ToString(), FileMode.Open, FileAccess.Read);
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.EndInit();
-                bi.StreamSource.Dispose();
-                return bi;
+                if (new FileInfo(value.ToString()).Length == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    try
+                    {
+                        BitmapImage bi = new BitmapImage();
+                        bi.BeginInit();
+                        //bi.UriSource = new Uri(value.ToString());
+                        bi.StreamSource = new FileStream(value.ToString(), FileMode.Open, FileAccess.Read);
+                        bi.CacheOption = BitmapCacheOption.OnLoad;
+                        bi.EndInit();
+                        bi.StreamSource.Dispose();
+                        return bi;
+                    }
+                    catch (Exception)
+                    {
+                        //for some reason MessagBox causes:An exception of type 'System.InvalidOperationException' occurred in WindowsBase.dll but was not handled in user code
+                        //MessageBoxResult result = MessageBox.Show(value.ToString()+ " is not a valid image file. Do you want me to delete it?");
+                        //if (result == MessageBoxResult.OK)
+                        //{
+                        //    File.Delete(value.ToString());
+                        //    return null;
+                        //}
+                        //else
+                        //{
+                        //    return null;
+                        //}
+                        return null;
+                        throw;
+                    }
+                }
             }
-
             return null;
         }
 
