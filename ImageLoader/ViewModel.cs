@@ -66,9 +66,9 @@ namespace MyImageLoader
             //For now the application is used as plug-in for just one row with possibly several images.
             DataRow row0 = PropDataTable.NewRow();
             List<string> files = new List<string>();
-            //String searchFolder = "D:\\Temp\\Images\\P1";
+            String searchFolder = "D:\\Temp\\Images\\P1";
             //this is when you use this application as plug-in for one row. It is a property you can set to avoid next dialog
-            String searchFolder = MainWindow.imagesPath;
+            //String searchFolder = MainWindow.imagesPath;
             if (searchFolder == null)
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -180,7 +180,7 @@ namespace MyImageLoader
                         if (sourceFileName == targetFileName)
                         {
                             fileNamesSame = true;
-                            continue;
+                            break;
                         }
                     }
                     if (!fileNamesSame)
@@ -194,51 +194,58 @@ namespace MyImageLoader
                         D1.Topmost = true;
                         D1.Question.Content = sourceFileName + " already exists. OK to replace, or please choose another name.";
                         D1.Answer.Text = sourceFileName;
-                        D1.Show();
                         D1.Answer.Focus();
                         D1.Answer.SelectAll();
-                        //wait for the answer and store it or cancel
-                        D1.Closing += (sender, e) =>
+                        var result = D1.ShowDialog();
+                        if ((bool)result)
                         {
-                            var d = sender as Dialogue1;
-                            if (d.Canceled == false)
+                            a1 = D1.Answer.Text;
+                        }
+                        ////wait for the answer and store it or cancel
+                        //D1.Closing += (sender, e) =>
+                        //{
+                        //    var d = sender as Dialogue1;
+                        //    if (d.Canceled == false)
+                        //    {
+                        //        a1 = D1.Answer.Text;
+                        //    }
+                        //    else
+                        //    {
+                        //        return;
+                        //    }
+                        //};
+                        if (a1!="")
+                        {
+                            var imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                            imageExtensions.Add(".jpg");
+                            imageExtensions.Add(".jpeg");
+                            //imageExtensions.Add(".jpe");
+                            //imageExtensions.Add(".jfif");
+                            imageExtensions.Add(".png");
+                            imageExtensions.Add(".bmp");
+                            //imageExtensions.Add(".dib");
+                            //imageExtensions.Add(".rle");
+                            imageExtensions.Add(".gif");
+                            //imageExtensions.Add(".tif");
+                            imageExtensions.Add(".tiff");
+                            //check if it is a valide image name
+                            string extension = Path.GetExtension(a1);
+                            if (!imageExtensions.Contains(extension))
                             {
-                                a1 = D1.Answer.Text;
-                                var imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                                imageExtensions.Add("jpg");
-                                imageExtensions.Add("jpeg");
-                                imageExtensions.Add("jpe");
-                                imageExtensions.Add("jfif");
-                                imageExtensions.Add("png");
-                                imageExtensions.Add("bmp");
-                                imageExtensions.Add("dib");
-                                imageExtensions.Add("rle");
-                                imageExtensions.Add("gif");
-                                imageExtensions.Add("tif");
-                                imageExtensions.Add("tiff");
-                                //check if it is a valide image name
-                                string extension = Path.GetExtension(a1);
-                                if (!imageExtensions.Contains(extension))
-                                {
-                                    System.Windows.MessageBox.Show("The file extension is not a valid image. Please try again...");
-                                    return;
-                                }
-                                //replace the fileName in dictionary CopyDict
-                                CopyDict.Add(sourcePaths[i], searchFolder + "\\" + a1);
-                                //i0.Iml[i] = new pImage(a1);//no because you can't cancel later
-                            }
-                            else
-                            {
+                                System.Windows.MessageBox.Show("The file extension is not a valid image. Please try again...");
                                 return;
                             }
-                        };
+                            //replace the fileName in dictionary CopyDict
+                            CopyDict.Add(sourcePaths[i], searchFolder + "\\" + a1);
+                            //i0.Iml[i] = new pImage(a1);//no because you can't cancel later
+                        }
                     }
                 }
                 //now use the dictionary CopyDict to copy the files and update the PropDataTable
                 //if the user Canceled one of the renaming you will not get here because of the return;s
                 foreach (KeyValuePair<string, string> entry in CopyDict)
                 {
-                    File.Copy(entry.Key, entry.Value);
+                    File.Copy(entry.Key, entry.Value,true);
                     while (!File.Exists(entry.Value))
                     {
                         Thread.Sleep(1000);
@@ -500,7 +507,7 @@ namespace MyImageLoader
                 Bitmap b = ImageLoader.Properties.Resources.pCOLADdummy;
                 b.Save(path);
             }
-            return dummy = new pImage(path);
+            return new pImage(path);
         }
     }
 }
